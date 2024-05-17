@@ -1,23 +1,23 @@
 #!/data/data/com.termux/files/usr/bin/env bash
 
-# sudo -- excute script to become root on android for termux
+# sudo -- execute script to become root on android for termux
 
 echo 'Attempting to become root...'
 
 su -c "export LD_LIBRARY_PATH=/data/data/com.termux/files/usr/lib;
 export PATH=/sbin:/vendor/bin:/system/sbin:/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/usr/bin/applets;
-if [[ 'root' -eq $(whoami) ]]; then
-	echo 'You are root.';
+if [[ 'root' == \$(whoami) ]]; then
+    echo 'You are root.';
 else
-	echo 'You are not root.';
-	exit;
+    echo 'You are not root.';
+    exit 1;
 fi;
 bash;"
 
 declare -r status="$?"
 
 if [[ "0" == "$status" ]]; then
-	echo "Good exit status."
+    echo "Good exit status."
 else
-	echo "Bad exit status: $status"
+    echo "Bad exit status: $status"
 fi
