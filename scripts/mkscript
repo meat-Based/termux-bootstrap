@@ -1,62 +1,60 @@
-#!/data/data/com.termux/files/usr/bin/bash 
+#!/data/data/com.termux/files/usr/bin/env bash
 
-# this program is still UNDER CONSTRUCTION
-# make shell scripts for bash
+# This program is still UNDER CONSTRUCTION
+# Make shell scripts for bash
 
-# set exit status values as constants
+# Set exit status values as constants
 declare -gir FILERR=1 # file errors
 declare -gir PERERR=2 # permission errors
 declare -gir EDTERR=3 # editor errors
 
-# no arguments were given
+# No arguments were given
 if (( 0 == $# )); then
-	echo "Nothing to do."
-	exit 0
+    echo "Nothing to do."
+    exit 0
 fi
 
-# source mkscript functions
+# Source mkscript functions
 if [[ -f ~/bin/mkscript.config ]]; then
-	. ~/bin/mkscript.config
-	echo "mkscript.config found."
-	echo "attempting to execute script..."
+    . ~/bin/mkscript.config
+    echo "mkscript.config found."
+    echo "Attempting to execute script..."
 else
-	echo "~/bin/mkscript.config is missing."
-	echo "Aborting now."
-	exit $FILERR
+    echo "~/bin/mkscript.config is missing."
+    echo "Aborting now."
+    exit $FILERR
 fi
 
-# process one file at a time and concatenate 
+# Process one file at a time and concatenate 
 # the filenames to a set to be processed by 
 # default/chosen editor
 while [[ 0 -lt $# ]]; do
-	filename=$1
-	
-	_check_file_existence "$filename"
-
-	_make_new_file "$filename"
-
-	_set_file_permissions "$filename"
-
-	fileset="$filename $fileset"
-
-	shift
+    filename=$1
+    
+    _check_file_existence "$filename"
+    _make_new_file "$filename"
+    _set_file_permissions "$filename"
+    fileset="$filename $fileset"
+    shift
 done
 
+# Check if .vimrc exists, if not create it
 if [[ ! -s ~/.vimrc ]]; then
-	_output_vim_config > ~/.vimrc
-	echo "Created ~/.vimrc file."
+    _output_vim_config > ~/.vimrc
+    echo "Created ~/.vimrc file."
 else
-	echo "~/.vimrc file already exists."
-	echo "Attempting to open files using [g]vi[m]"
+    echo "~/.vimrc file already exists."
+    echo "Attempting to open files using [g]vi[m]"
 fi
 
-_open_editor "$fileset" # function incomplete, use vim for now
+# Open the editor with the fileset
+_open_editor "$fileset" # This function may be incomplete, ensure it's using vim for now
 
+# Check the exit status of the editor
 if (( 0 == $? )); then
-	echo "Opened file(s): '$fileset'"
-	exit 0
+    echo "Opened file(s): '$fileset'"
+    exit 0
 else
-	echo "An error occurred opening file(s): '$fileset'"
-	exit $FILERR
+    echo "An error occurred opening file(s): '$fileset'"
+    exit $FILERR
 fi
-
