@@ -3,39 +3,39 @@
 # termux.bootstrap.sh
 #
 # Automates base installation and configuration for Termux environment
+#
 
 # SET GLOBAL VARIABLES
 
-# log the program name
+# Log the program name
 declare -r PROGNAME="$(basename $0)"
 
-# set exit codes
+# Set exit codes
 declare -r FAILURE=1
 declare -r FILE_ERROR=2
 declare -r DIR_ERROR=4
 declare -r PERM_ERROR=8
 declare -r ENV_ERROR=16
 
-# termux and bootstrap filepaths
+# Termux and bootstrap filepaths
 declare -r ETC=${PREFIX}/etc
 declare -r BIN=${HOME}/bin
 declare -r ARCHIVE=${HOME}/bash
 declare -r SCRIPTS=${PWD}/scripts
 
-# put a little color in your life
-declare -r YELLOW='\\033[1;33m' # used as indicator
-declare -r GREEN='\\033[1;32m'  # used as informational
-declare -r RED='\\033[1;31m'    # used as error
-declare -r BLANK='\\033[1;00m'  # reset prompt color
+# Put a little color in your life
+declare -r YELLOW='\033[1;33m' # Used as indicator
+declare -r GREEN='\033[1;32m'  # Used as informational
+declare -r RED='\033[1;31m'    # Used as error
+declare -r BLANK='\033[1;00m'  # Reset prompt color
 
-# termux environment variables
+# Termux environment variables
 declare -ra environ=($HOME $PREFIX $LD_LIBRARY_PATH)
 
-# determine which python version is installed
-#   value can be "2", "3", or "both"; "2" is the default value
-# if you do not want python
-#   leave empty PYTHON_VERSION= or as empty qoute PYTHON_VERSION=""
-# python2 is considered deprecated as of the year 2020
+# Determine which Python version is installed
+# Value can be "2", "3", or "both"; "2" is the default value
+# If you do not want Python, leave PYTHON_VERSION empty or as an empty quote PYTHON_VERSION=""
+# Python2 is considered deprecated as of the year 2020
 declare PYTHON_VERSION="3"
 
 function source_files () {
@@ -44,7 +44,7 @@ function source_files () {
         filepath="${PWD}/bootstrap/${filename}"
 
         if [[ -s "${filepath}" ]];
-            then source "${filepath}"
+        then source "${filepath}"
         else
             echo -e "Error: '${filename}' is missing or corrupt.\nExiting now."
             exit $FILE_ERROR
@@ -54,7 +54,7 @@ function source_files () {
     done
 }
 
-# sources must be loaded in this exact order !
+# Sources must be loaded in this exact order!
 source_files "config.sh" "help.sh" "install.sh" "remove.sh"
 
 cmd="$1"
