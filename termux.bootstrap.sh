@@ -38,6 +38,9 @@ declare -ra environ=($HOME $PREFIX $LD_LIBRARY_PATH)
 # Python2 is considered deprecated as of the year 2020
 declare PYTHON_VERSION="3"
 
+# Ensure LD_LIBRARY_PATH is set
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-/data/data/com.termux/files/usr/lib}
+
 function source_files () {
     for filename in "$@";
     do
