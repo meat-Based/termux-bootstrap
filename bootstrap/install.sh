@@ -141,3 +141,12 @@ install () {
             ;;
         scripts)
             install_scripts
+            ;;
+        storage)
+            setup_local_storage
+            ;;
+        *)
+            echo_usage_notice
+            ;;
+    esac
+}
