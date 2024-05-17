@@ -2,8 +2,7 @@
 #
 # termux.bootstrap.sh
 #
-# 	Automates base installation and configuration for Termux environment
-#
+# Automates base installation and configuration for Termux environment
 
 # SET GLOBAL VARIABLES
 
@@ -24,10 +23,10 @@ declare -r ARCHIVE=${HOME}/bash
 declare -r SCRIPTS=${PWD}/scripts
 
 # put a little color in your life
-declare -r YELLOW='\033[1;33m' # used as indicator
-declare -r GREEN='\033[1;32m'  # used as informational
-declare -r RED='\033[1;31m'    # used as error
-declare -r BLANK='\033[1;00m'  # reset prompt color
+declare -r YELLOW='\\033[1;33m' # used as indicator
+declare -r GREEN='\\033[1;32m'  # used as informational
+declare -r RED='\\033[1;31m'    # used as error
+declare -r BLANK='\\033[1;00m'  # reset prompt color
 
 # termux environment variables
 declare -ra environ=($HOME $PREFIX $LD_LIBRARY_PATH)
@@ -37,23 +36,22 @@ declare -ra environ=($HOME $PREFIX $LD_LIBRARY_PATH)
 # if you do not want python
 #   leave empty PYTHON_VERSION= or as empty qoute PYTHON_VERSION=""
 # python2 is considered deprecated as of the year 2020
-declare PYTHON_VERSION="2"
-
+declare PYTHON_VERSION="3"
 
 function source_files () {
-	for filename in "$@";
-        do
-		filepath="${PWD}/bootstrap/${filename}"
+    for filename in "$@";
+    do
+        filepath="${PWD}/bootstrap/${filename}"
 
-		if [[ -s "${filepath}" ]];
+        if [[ -s "${filepath}" ]];
             then source "${filepath}"
-		else
-			echo -e "Error: '${filename}' is missing or corrupt.\nExiting now."
-			exit $FILE_ERROR
-		fi
+        else
+            echo -e "Error: '${filename}' is missing or corrupt.\nExiting now."
+            exit $FILE_ERROR
+        fi
 
-		shift
-	done
+        shift
+    done
 }
 
 # sources must be loaded in this exact order !
@@ -63,32 +61,28 @@ cmd="$1"
 action="$2"
 
 case $cmd in
-	h|help)
-		echo_usage "$action"
-		;;
-
-	b|backup)
+    h|help)
+        echo_usage "$action"
+        ;;
+    b|backup)
         check_if_root
         check_environment
-		backup_home_dir
-		echo -e "${GREEN} * Successful backup.${BLANK}"
-		;;
-
-	i|install)
+        backup_home_dir
+        echo -e "${GREEN} * Successful backup.${BLANK}"
+        ;;
+    i|install)
         check_if_root
         check_environment
-		install "$action"
-		echo -e "${GREEN} * Successful installation.${BLANK}"
-		;;
-
-	r|remove)
+        install "$action"
+        echo -e "${GREEN} * Successful installation.${BLANK}"
+        ;;
+    r|remove)
         check_if_root
         check_environment
-		remove "$action"
-		echo -e "${GREEN} * Successful removal.${BLANK}"
-		;;
-
-	*)
-		echo_usage_notice
-		;;
+        remove "$action"
+        echo -e "${GREEN} * Successful removal.${BLANK}"
+        ;;
+    *)
+        echo_usage_notice
+        ;;
 esac
